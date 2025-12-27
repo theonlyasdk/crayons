@@ -2,8 +2,8 @@
 A simple image annotation app written in GTK.
 
 
-# Compilation
-## Requirements
+## Compilation
+### Requirements
 - Fedora
 	```sh
 	sudo dnf install gcc pkgconf-pkg-config gtk2-devel gtk3-devel
@@ -17,12 +17,12 @@ A simple image annotation app written in GTK.
 	sudo apt update && sudo apt install build-essential pkg-config libgtk2.0-dev libgtk-3-dev
 	```
 
-# Usage
+## Usage
 ```sh
 ./crayons <path_to_image>
 # or
 ./crayons # opens an empty window
 ```
 
-# License
+## License
 Licensed under the MIT License
