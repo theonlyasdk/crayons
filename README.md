@@ -1,5 +1,5 @@
 # Crayons
-A simple image annotation app written in GTK.
+A simple image annotator written in GTK.
 
 
 ## Compilation
