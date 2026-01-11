@@ -2,8 +2,9 @@
 A simple image annotator written in GTK.
 
 
-## Compilation
+## Building
 ### Requirements
+
 - Fedora
 	```sh
 	sudo dnf install gcc pkgconf-pkg-config gtk2-devel gtk3-devel
@@ -25,4 +26,4 @@ A simple image annotator written in GTK.
 ```
 
 ## License
-Licensed under the MIT License
+Licensed under the [MIT License](LICENSE)
