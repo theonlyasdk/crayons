@@ -2,6 +2,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
+#include <glib.h>
 
 static cairo_surface_t *surface = NULL;
 static GtkWidget *window = NULL;
@@ -404,29 +406,47 @@ static void on_new_file(GtkWidget *w, gpointer data) {
     update_drawing_area_size();
 }
 
-static gboolean perform_save(void) {
-    GtkWidget *dialog = gtk_file_chooser_dialog_new("Save Drawing",
-                                                    GTK_WINDOW(window),
-                                                    GTK_FILE_CHOOSER_ACTION_SAVE,
-                                                    "_Cancel", GTK_RESPONSE_CANCEL,
-                                                    "_Save", GTK_RESPONSE_ACCEPT,
-                                                    NULL);
-    
-    gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
-    gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), "drawing.png");
+
+static gchar *make_timestamped_name ()
+{
+    time_t    now = time (NULL);
+    struct tm tm;
+    localtime_r (&now, &tm);
+    return g_strdup_printf ("annotation-%02d-%02d-%04d_%02d-%02d.png",
+                            tm.tm_mday,
+                            tm.tm_mon + 1,
+                            tm.tm_year + 1900,
+                            tm.tm_hour,
+                            tm.tm_min);
+}
+
+static gboolean perform_save ()
+{
+    GtkWidget *dialog = gtk_file_chooser_dialog_new ("Save Drawing",
+                                          GTK_WINDOW (window),
+                                          GTK_FILE_CHOOSER_ACTION_SAVE,
+                                          "_Cancel", GTK_RESPONSE_CANCEL,
+                                          "_Save",   GTK_RESPONSE_ACCEPT,
+                                          NULL);
+
+    gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
+
+    gchar *default_name = make_timestamped_name ();
+    gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), default_name);
+    g_free (default_name);
 
     gboolean saved = FALSE;
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-        char *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-        cairo_surface_write_to_png(surface, filename);
-        g_free(filename);
+    if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+        char *filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+        cairo_surface_write_to_png (surface, filename);
+        g_free (filename);
         is_modified = FALSE;
         saved = TRUE;
     }
-    gtk_widget_destroy(dialog);
+
+    gtk_widget_destroy (dialog);
     return saved;
 }
-
 static void on_save_file(GtkWidget *w, gpointer data) {
     perform_save();
 }
@@ -451,7 +471,7 @@ static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event, gpointer dat
         if (perform_save()) {
             return FALSE; /* Close */
         } else {
-            return TRUE; /* Cancel close if save failed/cancelled */
+            return TRUE; /* Cancel close if save failed or got cancelled */
         }
     } else if (result == GTK_RESPONSE_NO) {
         return FALSE; /* Close */
@@ -461,7 +481,6 @@ static gboolean on_delete_event(GtkWidget *widget, GdkEvent *event, gpointer dat
 }
 
 static void on_quit_menu(GtkWidget *w, gpointer data) {
-    /* Send a delete-event to the window to trigger the check */
     gtk_window_close(GTK_WINDOW(window));
 }
 
