@@ -1,6 +1,9 @@
 # Crayons
 A simple image annotator written in GTK.
 
+## Screenshots
+<img width="732" height="673" alt="Screenshot at 2026-01-11 06-48-34" src="https://github.com/user-attachments/assets/50d05b7b-52bb-4ec8-96f4-3c1ab393496d" />
+<img width="802" height="670" alt="Screenshot at 2026-01-11 06-46-15" src="https://github.com/user-attachments/assets/ac561d66-cc46-4b5a-903d-33dd8c1bd586" />
 
 ## Building
 ### Requirements
