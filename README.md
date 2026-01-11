@@ -26,4 +26,4 @@ A simple image annotator written in GTK.
 ```
 
 ## License
-Licensed under the [MIT License](LICENSE)
+Licensed under the [Mozilla Public License v2.0](LICENSE)
