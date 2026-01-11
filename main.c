@@ -506,7 +506,7 @@ static void on_about(GtkWidget *w, gpointer data) {
     gtk_show_about_dialog(GTK_WINDOW(window),
                           "program-name", "Crayons",
                           "version", "1.1",
-                          "comments", "GTK Drawing App with Redact Tool & Zoom\n(c) theonlyasdk 2025-26",
+                          "comments", "Easy to use Image Annotator tool written in GTK\n(c) theonlyasdk 2025-26",
                           NULL);
 }
 
