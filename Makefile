@@ -1,18 +1,22 @@
-# Define the compiler
 CC = gcc
-
-# Get the flags for GTK 3 (Change to gtk4 if using GTK 4)
 CFLAGS = $(shell pkg-config --cflags gtk+-3.0) -lm -O3
 LIBS = $(shell pkg-config --libs gtk+-3.0)
+TARGET = crayons
+BIN_DIR = bin
 
-# The target
-all: crayons
+.PHONY: all clean run
 
-crayons: main.c
-	$(CC) -o crayons main.c $(CFLAGS) $(LIBS)
+all: $(BIN_DIR)/$(TARGET)
 
-run:
-	./crayons
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+$(BIN_DIR)/$(TARGET): main.c | $(BIN_DIR)
+	$(CC) -o $@ $< $(CFLAGS) $(LIBS)
+
+run: $(BIN_DIR)/$(TARGET)
+	./$<
 
 clean:
-	rm -f crayons
+	rm -rf $(BIN_DIR)
+
